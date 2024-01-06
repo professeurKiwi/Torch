@@ -1,3 +1,9 @@
+////////////////
+//  Grid.hpp  //
+////////////////
+
+//Contiens l'implémentation des méthodes des classes TileLine et TileGrid
+
 #include "Grid.hpp"
 
 TileLine::TileLine(const AssetsManager & assestsManager, const vector<vector<Tile>> & grid, int lineNb, const sf::Vector2f & bottomLeftCoordonate) : line(grid[lineNb])

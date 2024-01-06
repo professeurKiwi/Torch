@@ -1,3 +1,8 @@
+//////////////////
+//  Button.cpp  //
+//////////////////
+
+//Contiens l'implémentation des méthodes de la classe Button
 
 #include <math.h>
 #include <iostream>
@@ -32,7 +37,9 @@ text(int_to_roman(levelNum), assetsManager.getFont(), 45)
 
 bool Button::updateSelect(int cursorPosX, int cursorPosY)
 {
+    //On vérifie si le pointeur de la sourie est dans le cercle du bouton
     isSelected = sqrt(pow((cursorPosY - posY), 2) + pow((cursorPosX - posX), 2)) <= BUTTON_SIZE / 2;
+    //On met à jour le sprite et le texte
     if(isSelected)
     {
         border.setColor(sf::Color(80,255,80));

@@ -14,7 +14,7 @@
 
 using namespace std;
 
-//contiens les noms de toutes les textures qui peuvent être demandées à AssetsManager via getTexture
+//Contiens les noms de toutes les textures qui peuvent être demandées à AssetsManager via getTexture
 enum class TextureName {
     levelSelectionBackground,
     levelBackground,
@@ -45,13 +45,14 @@ enum class TextureName {
 class AssetsManager
 {
     public :
-        //doit être appelé une fois au début du programme pour charger les ressources. Renvoie true si le chargement à réussi.
+        //Doit être appelé une fois au début du programme pour charger les ressources. Renvoie true si le chargement à réussi.
         bool loadAssets();
-        //permet de récupérer un pointeur en lecture seule vers une texture dont le nom est donné en paramètre
+        
         const sf::Texture & getTexture(TextureName name) const {return textures.at(name);};
         const sf::Font & getFont() const {return mainFont;};
     private :
         bool loadTexture(TextureName name, string path);
+        //Permet de lier les textures chargées à leur nom
         map<TextureName, sf::Texture> textures;
         sf::Font mainFont;
 

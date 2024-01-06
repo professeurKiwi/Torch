@@ -1,3 +1,11 @@
+//////////////////
+//  Button.hpp  //
+//////////////////
+
+//Contiens la définition de la classe Button
+//Cette classe décrit un objet "bouton de sélection" qui
+//sera affiché dans le menu de selection des niveaux
+
 #ifndef BUTTON_HPP
 #define BUTTON_HPP
 

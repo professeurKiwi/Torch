@@ -1,3 +1,9 @@
+///////////////////////////
+//  GraphicsManager.cpp  //
+///////////////////////////
+
+//Contiens l'implémentation des méthodes de la classe GraphicsManager
+
 #include "GraphicsManager.hpp"
 
 GraphicsManager::GraphicsManager(sf::RenderWindow & window, const GameState & gameState, const AssetsManager & assetsManager) : 
@@ -30,7 +36,9 @@ void GraphicsManager::displayScreen()
 
 void GraphicsManager::displayLevel()
 {
+    //On affiche le fond d'écran
     window.draw(levelBackground);
+    //On affiche la grille ligne à ligne, on affiche les entités qui se trouvent sur la ligne que l'on viens d'afficher
     for(int i = 0; i < gameState.getGrid().getSize().y; i++)
     {
         window.draw(gameState.getGrid()[i]);
@@ -45,10 +53,12 @@ void GraphicsManager::displayLevel()
 void GraphicsManager::displayLevelSelectionScreen()
 {
 
-
+    //On affiche le fond d'écran
     window.draw(levelSelectionScreenBackground);
+    //On affiche les Boutons de sélection de niveau
     for(const Button & button : gameState.getLevelSelectionButtonsConst())
         window.draw(button);
+    //On affiche le titre Torch
     window.draw(levelSelectionTitle);
 
 

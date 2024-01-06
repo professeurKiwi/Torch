@@ -1,3 +1,15 @@
+////////////////
+//  main.cpp  //
+////////////////
+
+//Initialise le programme,
+//Ouvre la fenêtre de jeu
+//Instancie les objets uniques:
+// - AssetsManager
+// - GameState
+// - GameManager
+// - GraphicsManager
+
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <filesystem>
@@ -10,7 +22,8 @@
 #include "GraphicsManager.hpp"
 #include "GameManager.hpp"
 
-
+//Permet de définir le répertoire de l'executable comme répertoire de travail.
+//De cette façon, les chemins relatifs permettant le chargement des différentes ressources sont toujours corrects.
 void changeWorkingDirectory()
 {
     try
@@ -31,8 +44,6 @@ void changeWorkingDirectory()
 int main()
 {
     {
-        //On rend le chemin du répertoire de travail égal au chemin de l'executable 
-        //(pour que les chemins relatifs fonctionnent même quand l'executable est lancé depuis un autre répertoire)
         changeWorkingDirectory();
 
         //création de l'objet qui gère les assets, et chargement des assets
@@ -42,7 +53,6 @@ int main()
 
         //Taille de la fenêtre correspondant à une grille de 28 par 15 tuiles.
         sf::RenderWindow window(sf::VideoMode(64 * 28,64 * 15), "Torch", sf::Style::Titlebar | sf::Style::Close);
-
         window.setFramerateLimit(60);
 
         //Création de l'objet qui gère l'état du jeu

@@ -4,7 +4,6 @@
 
 //Contiens l'implémentation des méthodes de la classe AssetsManager
 
-
 #include "AssetsManager.hpp"
 
 

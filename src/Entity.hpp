@@ -1,3 +1,18 @@
+//////////////////
+//  Entity.hpp  //
+//////////////////
+
+//Contiens la définition des classes Entity et héritantes
+//Ces classes représentent les différentes entités qui
+//peuplent les niveau, et décrivent leur comportement.
+//Liste des entités:
+//
+// -Porte
+// -Plaque de pression
+// -Jarre
+// -Torche
+// -Joueur
+
 #ifndef ENTITY_HPP
 #define ENTITY_HPP
 
@@ -16,10 +31,12 @@ class Entity : public sf::Drawable
 
         virtual int getDisplayLine() const {return coordonates.y;};
     protected:
+        //Permet de changer les coordonnées d'affichage du sprite pour qu'il s'affiche sur la bonne tuile
         virtual void setSpritePosition();
         
         const sf::Vector2f & topLeftOfGrid;
         sf::Vector2i coordonates;
+        //Le sprite de l'entité, il est mis à jour au fil du jeu, et affiché à chaque itération de la boucle principale
         sf::Sprite sprite;
 };
 
@@ -38,6 +55,7 @@ class PressurePlate : public Entity
     private:
         const vector<Entity *> & entities;
         bool isPressed = false;
+        //La porte qu'actionne le bouton
         Entity & linkedDoor;
 };
 
@@ -47,17 +65,19 @@ class Door : public Entity
     public:
         Door(const AssetsManager & assetsManager, sf::Vector2i coordonates,  const sf::Vector2f & topLeftOfGrid, const sf::Color & color);
 
+        //vérifie si toutes les plaques de pressions associées sont actionnées, dans ce cas, ouvre la porte, sinon, la ferme
         void updateOpen();
 
-        bool getOpen() const {return isOpen;};
         void addPressurePlate(PressurePlate * pressurePlate) {pressurePlates.emplace_back(pressurePlate);};
 
+        bool getOpen() const {return isOpen;};
+        
     private:
         bool isOpen = false;
         vector<PressurePlate *> pressurePlates;
 };
 
-
+//Ce sont les entités qui peuvent être attrapées par un joueur (Torche et Jarre)
 class CatchableEntity : public Entity
 {
     public:
@@ -71,13 +91,13 @@ class CatchableEntity : public Entity
         Entity * holder;
 };
 
-
 class Jar : public CatchableEntity
 {
     public:
         Jar(const AssetsManager & assetsManager, sf::Vector2i coordonates, const sf::Vector2f & topLeftOfGrid);
 };
 
+//Représente les éléments animés
 class Animated
 {
     public:
@@ -93,8 +113,6 @@ class Torch : public Animated, public CatchableEntity
         Torch(const AssetsManager & assetsManager, sf::Vector2i coordonates, const sf::Vector2f & topLeftOfGrid);
         void update();
 };
-
-
 
 enum Direction{
     down = 0,
@@ -123,10 +141,13 @@ class Player : public Animated, public Entity
     protected:
         void setSpritePosition();
     private:
-        const AssetsManager & assetsManager;
-        const vector<Entity *> & entities;
+        
+        //Permet de choisir la bonne texture à afficher, suivant si le joueur se déplace, et s'il tiens un objet
         void setTexture();
         void lookForObjects();
+
+        const AssetsManager & assetsManager;
+        const vector<Entity *> & entities;
         bool isPlayer1;
         bool isMooving;
         Direction direction;

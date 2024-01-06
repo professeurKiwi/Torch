@@ -1,3 +1,8 @@
+/////////////////////
+//  GameState.cpp  //
+/////////////////////
+
+//Contiens l'implémentation des méthodes de la classe GameState
 
 #include "GameState.hpp"
 #include "Button.hpp"
@@ -6,13 +11,14 @@
 
 using namespace std;
 
+//Différentes couleurs  de portes et boutons associés
 sf::Color doorColors[MAXDOOR] =
 {
-    sf::Color(200,255,255),
-    sf::Color(255,200,255),
-    sf::Color(255,255,200),
-    sf::Color(220,220,255),
-    sf::Color(220,255,220)
+    sf::Color(180,255,255),
+    sf::Color(255,180,255),
+    sf::Color(255,255,180),
+    sf::Color(200,200,255),
+    sf::Color(200,255,150)
 };
 
 GameState::GameState(const sf::RenderWindow & window, const AssetsManager & assetsManager) : window(window), assetsManager(assetsManager)
@@ -23,36 +29,41 @@ GameState::GameState(const sf::RenderWindow & window, const AssetsManager & asse
 void GameState::initLevelSelectionButtons()
 {
     
-    levelSelectionButtons.push_back(Button(100, 500, 1, assetsManager));
-    levelSelectionButtons.push_back(Button(250, 700, 2, assetsManager));
-    levelSelectionButtons.push_back(Button(400, 500, 3, assetsManager));
-    levelSelectionButtons.push_back(Button(550, 700, 4, assetsManager));
-    levelSelectionButtons.push_back(Button(700, 500, 5, assetsManager));
-    levelSelectionButtons.push_back(Button(850, 700, 6, assetsManager));
-    levelSelectionButtons.push_back(Button(1000, 500, 7, assetsManager));
-    levelSelectionButtons.push_back(Button(1150, 700, 8, assetsManager));
-    levelSelectionButtons.push_back(Button(1300, 500, 9, assetsManager));
-    levelSelectionButtons.push_back(Button(1450, 700, 10, assetsManager));
-    levelSelectionButtons.push_back(Button(1600, 500, 11, assetsManager));
+    levelSelectionButtons.push_back(Button(146, 500, 1, assetsManager));
+    levelSelectionButtons.push_back(Button(296, 700, 2, assetsManager));
+    levelSelectionButtons.push_back(Button(446, 500, 3, assetsManager));
+    levelSelectionButtons.push_back(Button(596, 700, 4, assetsManager));
+    levelSelectionButtons.push_back(Button(746, 500, 5, assetsManager));
+    levelSelectionButtons.push_back(Button(896, 700, 6, assetsManager));
+    levelSelectionButtons.push_back(Button(1046, 500, 7, assetsManager));
+    levelSelectionButtons.push_back(Button(1196, 700, 8, assetsManager));
+    levelSelectionButtons.push_back(Button(1346, 500, 9, assetsManager));
+    levelSelectionButtons.push_back(Button(1496, 700, 10, assetsManager));
+    levelSelectionButtons.push_back(Button(1646, 500, 11, assetsManager));
     
 }
 
 void GameState::loadLevel(int levelNum)
 {
+    //On libère les ressources du niveau précédent
     freeLevelRessources();
 
+    //On charge le fichier du niveau
     ifstream file("Assets/Levels/" + to_string(levelNum) + ".torch");
 
     if(!file.is_open())
         throw exception();
 
+    //Création de la grille
     createGrid(file);
 
+    //On reviens au début du fichier
     file.clear();
     file.seekg(0);
     if(!file.good())
         throw exception();
 
+    //Création de la liste des entités
     createEntities(file);
     
 }
@@ -64,6 +75,7 @@ void GameState::createGrid(ifstream & file)
     vectorGrid.push_back(vector<Tile>());
     int i = 0;
     
+    //On lit chaque caractère et on associe la tuile correspondante.
     while(!file.eof())
     {
         
@@ -91,25 +103,32 @@ void GameState::createGrid(ifstream & file)
     //une ligne de trop est lue à cause du caractère de terminaison, on la retire.
     vectorGrid.pop_back();
 
+    //création de la grille
     grid = new TileGrid(window, assetsManager, vectorGrid);
 }
 
 
 void GameState::createEntities(ifstream & file)
 {
+    //Tableau des portes
     Door * doors[MAXDOOR];
     for(int i = 0; i < MAXDOOR; i++)
         doors[i] = nullptr;
     
+    //Vecteurs des plaques de pressions correspondant aux portes
     vector<PressurePlate *> pressurePlates[MAXDOOR];
 
+    //Vecteur des jarres
     vector<Jar *> jars;
+    //La torche
     Torch* torch;
 
 
 
     char ch;
     int x, y = 0;
+    //Pour chaque caractère, s'il correspond à une entitée, on la crée,
+    //et on stoque un pointeur vers elle dans le conteneur addapté, ci dessus
     while(!file.eof())
     {
         ch = file.get();
@@ -160,6 +179,8 @@ void GameState::createEntities(ifstream & file)
         }
         x++;
     }
+
+    //On met toutes les entités crées dans le vecteur d'entité, dans l'ordre d'affichage.
     for(int i = 0; i < MAXDOOR; i++)
     {
         if(doors[i] != nullptr)
@@ -177,6 +198,7 @@ void GameState::createEntities(ifstream & file)
     entities.push_back(player2);
 
 
+    //On associe les portes avec les plaques de pression, et on met à jour leur état
     for(int i = 0; i < MAXDOOR; i++)
     {
         if(doors[i] != nullptr)

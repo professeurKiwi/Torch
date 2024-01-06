@@ -1,3 +1,12 @@
+//////////////////
+//  Grid.hpp  //
+//////////////////
+
+//Contiens la définition des classes TileGrid et TileLine
+//TileGrid représente la grille de tuiles qui compose le terrain d'un niveau
+//TileLine resprésente une ligne de tuile, cette subdivision à de l'intéret car
+//l'affichage de la grille se fait ligne par ligne
+
 #ifndef GRID_HPP
 #define GRID_HPP
 
@@ -7,6 +16,7 @@
 
 using namespace std;
 
+//Liste des tuiles composant un niveau
 enum class Tile{
     wall,
     piercedWall,
@@ -23,10 +33,13 @@ class TileLine : public sf::Drawable
 
         void freeResources() { delete renderTexture; };
 
+        //Permet de récupérer la nième tuile de la ligne
         const Tile & operator[](int i) const {return line[i];};
 
     private:
 
+        //Cette renderTexture permet de générer un unique sprite pour l'affichage de toute la
+        //ligne, de cette façon, on économise des ressources pour l'affichage
         sf::RenderTexture * renderTexture;
         sf::Sprite sprite;
         const vector<Tile> & line;
@@ -38,14 +51,21 @@ class TileGrid
         TileGrid(const sf::RenderWindow & window, const AssetsManager & assestsManager, vector<vector<Tile>> & grid);
         ~TileGrid();
 
-        
-
+        //accesseurs et mutateurs
         const sf::Vector2i & getSize() const {return size;};
         const vector<vector<Tile>> & getGrid() const {return grid;};
         const sf::Vector2f & getDrawOrigin() const {return topLeftCoordonnates;};
 
+        //permet d'accéder à la nième ligne de la grille
         const TileLine & operator[](int i) const {return lines[i];};
-
+        //permet d'afficher la grille dans un stream. Cette fonction peut être utilisée en débug pour vérifier la grille dans le terminal.
+        //Exemple de sortie:
+        //WWWWWWW
+        //W     ~
+        //W|WWWWW
+        //W WWW W
+        //W     W
+        //WWWWWWW
         friend ostream& operator<< (std::ostream& stream, const TileGrid& tileGrid) { tileGrid.print(stream); return stream;};
 
     private:

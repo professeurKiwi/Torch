@@ -1,23 +1,20 @@
+///////////////////////
+//  GameManager.cpp  //
+///////////////////////
+
+//Contiens l'implémentation des méthodes de la classe GameManager
+
 #include "GameManager.hpp"
 #include "Button.hpp"
 
 
-GameManager::GameManager(sf::RenderWindow & window, GameState & gameState) : window(window), gameState(gameState)
-{
-
-}
 
 void GameManager::update()
 {
     if(gameState.getInSelectionScreen())
         updateLevelSelectionScreen();
     else
-    {
         updateLevel();
-    }
-    
-
-
 }
 
 void GameManager::updateLevelSelectionScreen()
@@ -52,13 +49,19 @@ void GameManager::updateLevelSelectionScreen()
 
 void GameManager::updateLevel()
 {
-    
     static int milliseconds = 0;
+
+    //On récupère le temps écoulé depuis la dernière itération de boucle
     milliseconds += clock.restart().asMilliseconds();
+
+    //Si il s'est écoulé assez de temps, on déclenche une nouvelle frame du jeu
     if(milliseconds >= FRAMERATE)
     {
         
         milliseconds -= FRAMERATE;
+
+        //On parcours des entités, on update les entitées animées pour qu'elles passent à leur prochaine frame d'animation.
+        //On demande aussi aux plaques de pressions de mettre à jour leur états pour prendre en comptes de possibles changements.
         for(Entity * entity : gameState.getEntities())
         {
             Animated * animated = dynamic_cast<Animated *>(entity);
@@ -74,12 +77,14 @@ void GameManager::updateLevel()
             }
         }
 
+        //On test si un joueur à réussi à sortir avec la torche, dans ce cas, on retourne au menu de sélection
         if(winTest(gameState.getPlayer(true)) || winTest(gameState.getPlayer(false)))
         {
             gameState.setInSelectionScreen(true);
             return;
         }
 
+        //Déplacements joueur 1
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
             tryMoove(gameState.getPlayer(true), Direction::up);
         else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
@@ -89,6 +94,7 @@ void GameManager::updateLevel()
         else if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
             tryMoove(gameState.getPlayer(true), Direction::right);
 
+        //Déplacements joueur 2
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::O))
             tryMoove(gameState.getPlayer(false), Direction::up);
         else if(sf::Keyboard::isKeyPressed(sf::Keyboard::K))
@@ -99,9 +105,6 @@ void GameManager::updateLevel()
             tryMoove(gameState.getPlayer(false), Direction::right);
     }
 
-    
-        
-
     //On gère les évènements
     sf::Event event;
     while (window.pollEvent(event)) {
@@ -110,16 +113,19 @@ void GameManager::updateLevel()
         }
         else if(event.type == sf::Event::KeyPressed)
         {
+            //Si on appuie sur échape, on sors du niveau
             if(event.key.code == sf::Keyboard::Escape)
             {
                 gameState.setInSelectionScreen(true);
                 return;
             }
+            //Touche action joueur 1
             else if(event.key.code == sf::Keyboard::A)
             {
                 if(!tryGive(gameState.getPlayer(true)))
                     tryDrop(gameState.getPlayer(true));
             }
+            //Touche action joueur 2
             else if(event.key.code == sf::Keyboard::I)
             {
                 if(!tryGive(gameState.getPlayer(false)))

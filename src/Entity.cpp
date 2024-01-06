@@ -1,6 +1,10 @@
+//////////////////
+//  Entity.cpp  //
+//////////////////
+
+//Contiens l'implémentations de toutes les méthodes des classes Entity
+
 #include "Entity.hpp"
-
-
 
 void Entity::draw(sf::RenderTarget & target, sf::RenderStates) const
 {
@@ -48,6 +52,7 @@ entities(entities)
 bool PressurePlate::updatePressed() 
 {
     bool res = false, ret = false;
+    //Si une autre entité est sur la même tuile, la plaque est pressée
     for(const Entity * en : entities)
     {
         if(en->getCoordonates() == coordonates && typeid(*en) != typeid(PressurePlate))
@@ -56,6 +61,7 @@ bool PressurePlate::updatePressed()
             break;
         }
     }
+    //si l'état la changé, on retourne vrai
     if(res != isPressed)
     {
         ret = true;
@@ -81,6 +87,8 @@ Door::Door(const AssetsManager & assetsManager, sf::Vector2i coordonates,  const
 
 void Door::updateOpen()
 {
+    //Si toutes les plaques de pressions associées sont actionnées, la porte est ouverte
+    //Sinon, elle est fermée
     for(PressurePlate * pr : pressurePlates)
     {
         if(!pr->getIsPressed())
@@ -187,10 +195,12 @@ void Player::setTexture()
 
 void Player::update()
 {
+    //On passe à la frame suivante de l'animation
     animationState++;
     if(animationState >= 8)
     {
         animationState = 0;
+        //Si on arrive à la fin d'un cycle d'animation et que l'on était en déplacement, on arrive sur la nouvelle tuile
         if(isMooving)
         {
             switch (direction)
@@ -215,6 +225,7 @@ void Player::update()
                 lookForObjects();
         }
     }
+    //Le sprite affiche un rectangle de la texture qui correspond à la bonne frame d'animation
     sprite.setTextureRect(sf::IntRect(sf::Vector2(animationState * 16, direction * 32), sf::Vector2(16,32)));
     if(isMooving)
         setSpritePosition();
@@ -222,6 +233,7 @@ void Player::update()
 
 void Player::setSpritePosition()
 {
+    //On ajoute à la position normale du sprite l'avancement du mouvement du personnage
     sf::Vector2f additionVector(0,0);
     if(isMooving)
     {
