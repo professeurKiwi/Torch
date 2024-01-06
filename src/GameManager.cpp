@@ -52,10 +52,12 @@ void GameManager::updateLevelSelectionScreen()
 
 void GameManager::updateLevel()
 {
+    
     static int milliseconds = 0;
     milliseconds += clock.restart().asMilliseconds();
     if(milliseconds >= FRAMERATE)
     {
+        
         milliseconds -= FRAMERATE;
         for(Entity * entity : gameState.getEntities())
         {
@@ -71,13 +73,33 @@ void GameManager::updateLevel()
                     ((Door &)(pressurePlate->getLinkedDoor())).updateOpen();
             }
         }
+
+        if(winTest(gameState.getPlayer(true)) || winTest(gameState.getPlayer(false)))
+        {
+            gameState.setInSelectionScreen(true);
+            return;
+        }
+
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
+            tryMoove(gameState.getPlayer(true), Direction::up);
+        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+            tryMoove(gameState.getPlayer(true), Direction::left);
+        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+            tryMoove(gameState.getPlayer(true), Direction::down);
+        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+            tryMoove(gameState.getPlayer(true), Direction::right);
+
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::O))
+            tryMoove(gameState.getPlayer(false), Direction::up);
+        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::K))
+            tryMoove(gameState.getPlayer(false), Direction::left);
+        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::L))
+            tryMoove(gameState.getPlayer(false), Direction::down);
+        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::M))
+            tryMoove(gameState.getPlayer(false), Direction::right);
     }
 
-    if(winTest(gameState.getPlayer(true)) || winTest(gameState.getPlayer(false)))
-     {
-        gameState.setInSelectionScreen(true);
-        return;
-     }
+    
         
 
     //On gère les évènements
@@ -105,23 +127,7 @@ void GameManager::updateLevel()
             }
         }
     }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
-        tryMoove(gameState.getPlayer(true), Direction::up);
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
-        tryMoove(gameState.getPlayer(true), Direction::left);
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-        tryMoove(gameState.getPlayer(true), Direction::down);
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-        tryMoove(gameState.getPlayer(true), Direction::right);
 
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::O))
-        tryMoove(gameState.getPlayer(false), Direction::up);
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::K))
-        tryMoove(gameState.getPlayer(false), Direction::left);
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::L))
-        tryMoove(gameState.getPlayer(false), Direction::down);
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::M))
-        tryMoove(gameState.getPlayer(false), Direction::right);
 
 
 }

@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "GameState.hpp"
 
-#define FRAMERATE 7
+#define FRAMERATE 45
 
 class GameManager
 {

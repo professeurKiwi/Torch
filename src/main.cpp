@@ -43,6 +43,8 @@ int main()
         //Taille de la fenêtre correspondant à une grille de 28 par 15 tuiles.
         sf::RenderWindow window(sf::VideoMode(64 * 28,64 * 15), "Torch", sf::Style::Titlebar | sf::Style::Close);
 
+        window.setFramerateLimit(60);
+
         //Création de l'objet qui gère l'état du jeu
         GameState gameState(window, assetsManager);
 
