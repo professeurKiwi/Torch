@@ -11,7 +11,9 @@ FetchContent_Declare(SFML
     GIT_TAG 2.6.x)
 FetchContent_MakeAvailable(SFML)
 
-add_executable(Torch src/main.cpp)
+file(GLOB sources src/*.cpp src/*.hpp)
+
+add_executable(Torch ${sources})
 target_link_libraries(Torch PRIVATE sfml-graphics)
 target_compile_features(Torch PRIVATE cxx_std_17)
 
