@@ -267,7 +267,8 @@ void Player::moove(Direction dir)
 }
 
 void Player::lookForObjects()
-{
+{   
+    //Si un objet attrapable se trouve sur la même case que le joueur, il l'attrape
     for(Entity * entity : entities)
     {
         CatchableEntity* catchableEntity = dynamic_cast<CatchableEntity *>(entity);

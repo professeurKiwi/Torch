@@ -14,6 +14,7 @@ TileLine::TileLine(const AssetsManager & assestsManager, const vector<vector<Til
     renderTexture->setSmooth(false);
     renderTexture->clear(sf::Color(0,0,0,0));
     
+    //pour chaque tuile de la ligne, on affiche le sprite correspondant sur la renderTexture
     for(int i = 0; i <  line.size(); i++)
     {
         sf::Sprite spriteTmp;
@@ -41,6 +42,7 @@ TileLine::TileLine(const AssetsManager & assestsManager, const vector<vector<Til
     }
     renderTexture->display();
 
+    //On crée le sprite de la ligne avec la texture
     sprite = sf::Sprite(renderTexture->getTexture());
 
     sprite.setOrigin(sf::Vector2f(0, 32));

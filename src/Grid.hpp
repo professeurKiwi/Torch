@@ -1,6 +1,6 @@
-//////////////////
+////////////////
 //  Grid.hpp  //
-//////////////////
+////////////////
 
 //Contiens la définition des classes TileGrid et TileLine
 //TileGrid représente la grille de tuiles qui compose le terrain d'un niveau
