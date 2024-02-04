@@ -29,17 +29,13 @@ GameState::GameState(const sf::RenderWindow & window, const AssetsManager & asse
 void GameState::initLevelSelectionButtons()
 {
     
-    levelSelectionButtons.push_back(Button(146, 500, 1, assetsManager));
-    levelSelectionButtons.push_back(Button(296, 700, 2, assetsManager));
-    levelSelectionButtons.push_back(Button(446, 500, 3, assetsManager));
-    levelSelectionButtons.push_back(Button(596, 700, 4, assetsManager));
-    levelSelectionButtons.push_back(Button(746, 500, 5, assetsManager));
-    levelSelectionButtons.push_back(Button(896, 700, 6, assetsManager));
-    levelSelectionButtons.push_back(Button(1046, 500, 7, assetsManager));
-    levelSelectionButtons.push_back(Button(1196, 700, 8, assetsManager));
-    levelSelectionButtons.push_back(Button(1346, 500, 9, assetsManager));
-    levelSelectionButtons.push_back(Button(1496, 700, 10, assetsManager));
-    levelSelectionButtons.push_back(Button(1646, 500, 11, assetsManager));
+    levelSelectionButtons.push_back(Button(221, 500, 1, assetsManager));
+    levelSelectionButtons.push_back(Button(446, 700, 2, assetsManager));
+    levelSelectionButtons.push_back(Button(671, 500, 3, assetsManager));
+    levelSelectionButtons.push_back(Button(896, 700, 4, assetsManager));
+    levelSelectionButtons.push_back(Button(1121, 500, 5, assetsManager));
+    levelSelectionButtons.push_back(Button(1346, 700, 6, assetsManager));
+    levelSelectionButtons.push_back(Button(1571, 500, 7, assetsManager));
     
 }
 
